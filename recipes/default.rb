@@ -77,11 +77,11 @@ site_dir = site['document_root']
     group "root"
     mode "0644"
     variables(
-      :host            => node['drupal']['database_host']
+      :host            => node['drupal']['database_host'],
       :database        => node['drupal']['database'],
       :user            => node['drupal']['database_user'],
       :password        => node['drupal']['database_password'],
-      :salt            => secure_password,
+      :salt            => secure_password
     )
     notifies :write, "log[Navigate to 'http://#{site_fqdn}/install.php' to complete drupal installation]"
   end

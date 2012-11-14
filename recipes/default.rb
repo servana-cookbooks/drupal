@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+
 node["sites"].each do |site|
 
   application_set = site['config']['set']

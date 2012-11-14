@@ -33,6 +33,7 @@ node["sites"].each do |site|
 node.set['drupal']['database_user'] = site['database']['user']
 node.set['drupal']['database_password'] =  site['database']['password']
 node.set['drupal']['database'] =  site['database']['name']
+node.set['drupal']['salt'] = secure_password
 
 site_fqdn = site['server_name']
 site_dir = site['document_root']
@@ -83,7 +84,7 @@ site_dir = site['document_root']
       :database        => node['drupal']['database'],
       :user            => node['drupal']['database_user'],
       :password        => node['drupal']['database_password'],
-      :salt            => secure_password
+      :salt            => node['drupal']['salt']
     )
     notifies :write, "log[Navigate to 'http://#{site_fqdn}/install.php' to complete drupal installation]"
   end

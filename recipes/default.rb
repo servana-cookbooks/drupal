@@ -68,10 +68,23 @@ site_dir = site['document_root']
     recursive true
   end
 
+  directory "sites/default/files"
+    owner "www-data"
+    group "www-data"
+    mode "0755"
+    action :create
+    recursive true
+  end
+
   execute "untar-drupal" do
     cwd site_dir
     command "tar --strip-components 1 -xzf #{Chef::Config[:file_cache_path]}/drupal-#{node['drupal']['version']}.tar.gz"
     creates "#{site_dir}/install.php"
+  end
+
+  execute "update-permissions"
+   cwd site_dir
+   command "chown -R www-data:www-data #{site_dir}"
   end
 
   template "#{site_dir}/sites/default/settings.php" do

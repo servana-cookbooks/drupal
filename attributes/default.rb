@@ -19,3 +19,7 @@
 
 default['drupal']['version'] = "latest"
 default['drupal']['latest'] = "7.17"
+default['drupal']['database_host'] = "localhost"
+default['drupal']['database_user'] = "drupal_user"
+default['drupal']['database_password'] = "foobar"
+default['drupal']['database'] = "drupal"

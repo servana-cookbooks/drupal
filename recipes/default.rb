@@ -28,8 +28,12 @@ node["sites"].each do |site|
     end
   end
 
-  site_fqdn = site['server_name']
-  site_dir = site['document_root']
+node.set['drupal']['database_user'] = site['database']['user']
+node.set['drupal']['database_password'] =  site['database']['password']
+node.set['drupal']['database'] =  site['database']['name']
+
+site_fqdn = site['server_name']
+site_dir = site['document_root']
 
   if node['drupal']['version'] == 'latest'
   	version = node['drupal']['latest']
@@ -65,6 +69,21 @@ node["sites"].each do |site|
     cwd site_dir
     command "tar --strip-components 1 -xzf #{Chef::Config[:file_cache_path]}/drupal-#{node['drupal']['version']}.tar.gz"
     creates "#{site_dir}/install.php"
+  end
+
+  template "#{site_dir}/sites/default/settings.php" do
+    source "settings.php.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables(
+      :host            => node['drupal']['database_host']
+      :database        => node['drupal']['database'],
+      :user            => node['drupal']['database_user'],
+      :password        => node['drupal']['database_password'],
+      :salt            => secure_password,
+    )
+    notifies :write, "log[Navigate to 'http://#{site_fqdn}/install.php' to complete drupal installation]"
   end
 
 

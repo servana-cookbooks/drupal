@@ -68,7 +68,7 @@ site_dir = site['document_root']
     recursive true
   end
 
-  directory "sites/default/files"
+  directory "sites/default/files" do
     owner "www-data"
     group "www-data"
     mode "0755"

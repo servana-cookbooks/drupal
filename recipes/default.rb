@@ -82,7 +82,7 @@ site_dir = site['document_root']
     creates "#{site_dir}/install.php"
   end
 
-  execute "update-permissions"
+  execute "update-permissions" do
    cwd site_dir
    command "chown -R www-data:www-data #{site_dir}"
   end
